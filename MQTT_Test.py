@@ -20,7 +20,7 @@ master.set_timeout(5.0)
 master.set_verbose(True)
 
 
-ser = serial.Serial(port="COM19", baudrate = 9600, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, bytesize=serial.EIGHTBITS, timeout=1)
+ser = serial.Serial(port='/dev/ttyS4', baudrate = 9600, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, bytesize=serial.EIGHTBITS, timeout=1)
 
 def get_FirePeople():
     ser.write(b'$016\r\n') # send command for gate Di data
