@@ -215,7 +215,7 @@ def jobforalarm():
     print (get_earthquake())
     
 schedule.every(1).minutes.do(jobforpublish)  
-schedule.every().seconds.do(jobforalarm)  
+schedule.every(0.1).seconds.do(jobforalarm)  
 
 '''
 if __name__ == '__main__':  
