@@ -15,7 +15,7 @@ client = mqtt.Client()
 client.username_pw_set("acme","85024828")
 client.connect("210.68.227.123", 3881, 60)
 
-master = modbus_rtu.RtuMaster(serial.Serial(port='COM3', baudrate=9600, bytesize=8, parity='N', stopbits=1, xonxoff=0))
+master = modbus_rtu.RtuMaster(serial.Serial(port='/dev/ttyS1', baudrate=9600, bytesize=8, parity='N', stopbits=1, xonxoff=0))
 master.set_timeout(5.0)
 master.set_verbose(True)
 
