@@ -228,8 +228,8 @@ if __name__ == '__main__':
 if __name__ == '__main__':
     while True:
         print (get_FirePeople())
-        #print (get_temphumi())
-        time.sleep(.01)
+        print (get_temphumi())
+        time.sleep(1)
 '''
 if __name__ == '__main__':
     alarm_temp = 22
