@@ -212,7 +212,7 @@ def jobforalarm():
         check_temp(Evm_TH[0],alarm_temp)
         TempHumi(Evm_TH[0],Evm_TH[1])
     
-    print (get_earthquake())
+    # print (get_earthquake())
     
 schedule.every(1).minutes.do(jobforpublish)  
 schedule.every(0.1).seconds.do(jobforalarm)  
