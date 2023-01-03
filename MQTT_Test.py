@@ -228,7 +228,7 @@ if __name__ == '__main__':
 if __name__ == '__main__':
     while True:
         print (get_earthquake())
-        print (get_temphumi())
+        #print (get_temphumi())
         time.sleep(.01)
 '''
 if __name__ == '__main__':
