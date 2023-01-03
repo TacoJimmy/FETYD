@@ -217,7 +217,7 @@ def jobforalarm():
 schedule.every(1).minutes.do(jobforpublish)  
 schedule.every(0.1).seconds.do(jobforalarm)  
 
-'''
+
 if __name__ == '__main__':  
     while True:  
         schedule.run_pending()  
@@ -230,7 +230,7 @@ if __name__ == '__main__':
         print (get_FirePeople())
         print (get_temphumi())
         time.sleep(1)
-'''
+
 if __name__ == '__main__':
     alarm_temp = 22
     while True:
