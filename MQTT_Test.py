@@ -191,7 +191,7 @@ def check_temp(temp_status,alarm_temp):
         if glo_temp_flag == 0 :
             Temperature_alarm(temp_status)
             glo_temp_flag = 1
-    if temp_status < alarm_temp :
+    if (temp_status < alarm_temp) and (glo_temp_flag == 1) :
         glo_temp_flag = 0
 
 def jobforpublish():
@@ -220,7 +220,7 @@ def jobforpublish():
     
 def jobforalarm():
     try:
-        alarm_temp = 25
+        alarm_temp = 28
         FirePeople_value = get_FirePeople()
         Fire_value = FirePeople_value[0]
         People_value = FirePeople_value[1]
