@@ -195,46 +195,52 @@ def check_temp(temp_status,alarm_temp):
         glo_temp_flag = 0
 
 def jobforpublish():
-    alarm_temp = 24
-    #check people and fire status
-    FirePeople_value = get_FirePeople()
-    Fire_value = FirePeople_value[0]
-    People_value = FirePeople_value[1]
+    try:
+        alarm_temp = 24
+        #check people and fire status
+        FirePeople_value = get_FirePeople()
+        Fire_value = FirePeople_value[0]
+        People_value = FirePeople_value[1]
         
-    # Fire_status publish and alarm
-    Fire_Func(Fire_value)
-    check_fire(Fire_value)
-    # peopledetec_status publish and alarm
-    peopledetec_Func(People_value)
-    check_people(People_value)
-        
-    # temperature value publish and alarm
-    Evm_TH = get_temphumi()
-    check_temp(Evm_TH[0],alarm_temp)
-    print (Evm_TH)
-    TempHumi(Evm_TH[0],Evm_TH[1])
-    
-    
-def jobforalarm():
-    alarm_temp = 24
-    FirePeople_value = get_FirePeople()
-    Fire_value = FirePeople_value[0]
-    People_value = FirePeople_value[1]
-        
-    # Fire_status publish and alarm
-    if Fire_value == 1:
+        # Fire_status publish and alarm
         Fire_Func(Fire_value)
         check_fire(Fire_value)
-    # peopledetec_status publish and alarm
-    if People_value == 1:
+        # peopledetec_status publish and alarm
         peopledetec_Func(People_value)
         check_people(People_value)
         
-    # temperature value publish and alarm
-    Evm_TH = get_temphumi()
-    if Evm_TH[0] >= alarm_temp:
+        # temperature value publish and alarm
+        Evm_TH = get_temphumi()
         check_temp(Evm_TH[0],alarm_temp)
+        print (Evm_TH)
         TempHumi(Evm_TH[0],Evm_TH[1])
+    except:
+        print ("somethingerror_normal")
+    
+    
+def jobforalarm():
+    try:
+        alarm_temp = 25
+        FirePeople_value = get_FirePeople()
+        Fire_value = FirePeople_value[0]
+        People_value = FirePeople_value[1]
+        
+        # Fire_status publish and alarm
+        if Fire_value == 1:
+            Fire_Func(Fire_value)
+            check_fire(Fire_value)
+        # peopledetec_status publish and alarm
+        if People_value == 1:
+            peopledetec_Func(People_value)
+            check_people(People_value)
+        
+        # temperature value publish and alarm
+        Evm_TH = get_temphumi()
+        if Evm_TH[0] >= alarm_temp:
+            check_temp(Evm_TH[0],alarm_temp)
+            TempHumi(Evm_TH[0],Evm_TH[1])
+    except:
+        print ("somethingerror_alarm")
     
     # print (get_earthquake())
     
