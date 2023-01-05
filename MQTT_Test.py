@@ -191,7 +191,7 @@ def check_temp(temp_status,alarm_temp):
         if glo_temp_flag == 0 :
             Temperature_alarm(temp_status)
             glo_temp_flag = 1
-    if (temp_status < alarm_temp) and (glo_temp_flag == 1) :
+    if temp_status < alarm_temp:
         glo_temp_flag = 0
 
 def jobforpublish():
