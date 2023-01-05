@@ -112,12 +112,18 @@ def Water_Func():
     client.publish("yuanta/water", json.dumps(payload_WaterNode))
     
 def Fire_Func(fire_status):
-    payload_fire = {"FireNode_01":fire_status}
+    if fire_status == 1 :
+        payload_fire = {"FireNode_01":1}
+    elif fire_status == 1 :
+        payload_fire = {"FireNode_01":0}
     print (json.dumps(payload_fire))
     client.publish("yuanta/fire", json.dumps(payload_fire))
     
 def peopledetec_Func(people_status):
-    payload_peopledetec = {"PeopleDetec":people_status}
+    if people_status == 1 :
+        payload_peopledetec = {"PeopleDetec":0}
+    elif people_status == 0 :
+        payload_peopledetec = {"PeopleDetec":1}
     print (json.dumps(payload_peopledetec))
     client.publish("yuanta/peopledetec", json.dumps(payload_peopledetec))
     
