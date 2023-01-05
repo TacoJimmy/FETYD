@@ -113,9 +113,9 @@ def Water_Func():
     
 def Fire_Func(fire_status):
     if fire_status == 1 :
-        payload_fire = {"FireNode_01":1}
-    elif fire_status == 1 :
         payload_fire = {"FireNode_01":0}
+    elif fire_status == 0 :
+        payload_fire = {"FireNode_01":1}
     print (json.dumps(payload_fire))
     client.publish("yuanta/fire", json.dumps(payload_fire))
     
