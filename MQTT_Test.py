@@ -136,13 +136,13 @@ def earthquake_alarm():
     print (json.dumps(payload_earthquakealarm))
     client.publish("yuanta/earthquake_error", json.dumps(payload_earthquakealarm))
     
-def Temperature_alarm():
-    payload_temperaturealarm = {"Temperature":0}
+def Temperature_alarm(temp):
+    payload_temperaturealarm = {"Temperature":temp}
     print (json.dumps(payload_temperaturealarm))
     client.publish("yuanta/th_error", json.dumps(payload_temperaturealarm))
 
-def Humidity_alarm():
-    payload_Humidityalarm = {"Humidity":0}
+def Humidity_alarm(humi):
+    payload_Humidityalarm = {"Humidity":humi}
     print (json.dumps(payload_Humidityalarm))
     client.publish("yuanta/th_error", json.dumps(payload_Humidityalarm))
 
@@ -189,7 +189,7 @@ def check_temp(temp_status,alarm_temp):
     global glo_temp_flag
     if temp_status  >= alarm_temp:
         if glo_temp_flag == 0 :
-            Temperature_alarm()
+            Temperature_alarm(temp_status)
             glo_temp_flag = 1
     if temp_status < alarm_temp :
         glo_temp_flag = 0
