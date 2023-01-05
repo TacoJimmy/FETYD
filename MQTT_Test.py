@@ -196,7 +196,7 @@ def check_temp(temp_status,alarm_temp):
 
 def jobforpublish():
     try:
-        alarm_temp = 24
+        alarm_temp = 28
         #check people and fire status
         FirePeople_value = get_FirePeople()
         Fire_value = FirePeople_value[0]
