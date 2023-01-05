@@ -11,6 +11,21 @@ import schedule
 
 
 
+glo_fire_flag = 0
+glo_people_flag = 0
+glo_temp_flag = 0
+client = mqtt.Client()
+client.username_pw_set("acme","85024828")
+client.connect("210.68.227.123", 3881, 60)
+
+
+master = modbus_rtu.RtuMaster(serial.Serial(port='/dev/ttyS1', baudrate=9600, bytesize=8, parity='N', stopbits=1, xonxoff=0))
+master.set_timeout(5.0)
+master.set_verbose(True)
+
+
+ser = serial.Serial(port='/dev/ttyS4', baudrate = 9600, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, bytesize=serial.EIGHTBITS, timeout=1)
+
 
 
 def setmqtt():
@@ -228,9 +243,6 @@ schedule.every(1).seconds.do(jobforalarm)
 
 
 if __name__ == '__main__':  
-    setmqtt()
-    setmodbus()
-    setascii()
 
     while True:  
         schedule.run_pending()  
