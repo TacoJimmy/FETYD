@@ -169,6 +169,20 @@ def TempHumi(temp,humi):
     payload_TempHumi = {"Temperature":temp,"Humidity":humi}
     print (json.dumps(payload_TempHumi))
     client.publish("yuanta/th", json.dumps(payload_TempHumi))
+
+def PowerManage(Powerdata):
+    
+    payload_power = {"mainpowertype":"單相單線",
+                        "voltage":Powerdata[0],
+                        "current_r":Powerdata[1],
+                        "power":Powerdata[4],
+                        "pf":Powerdata[5],
+                        "energy":Powerdata[6],
+                        "emsdevicealive":Powerdata[7],
+                        "loop_name":"mainpower",
+                        }
+    print (json.dumps(payload_power))
+    client.publish("yuanta/th", json.dumps(payload_power))
     
 def earthquake():
     payload_earthquake = {"earthquake":0,"sensor_alive":1}
@@ -258,6 +272,9 @@ def jobforpublish():
         check_temp(Evm_TH[0],alarm_temp)
         print (Evm_TH)
         TempHumi(Evm_TH[0],Evm_TH[1])
+
+        # get power data
+
     except:
         print ("somethingerror_normal")
     
@@ -296,8 +313,12 @@ if __name__ == '__main__':
 
     while True:  
         
-        MainLoop01 = read_Main_PowerMeter(5)
-        print (MainLoop01)
+        Powerdata = read_Main_PowerMeter(5)
+        PowerManage(Powerdata )
+
+        
+        time.sleep(5) 
+
         '''
         schedule.run_pending()  
         time.sleep(1) 
