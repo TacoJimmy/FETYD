@@ -326,8 +326,8 @@ def jobforpublish():
         Water_Func(water_level)
 
         # get earth_level
-        earth_level = get_earthquake()
-        earthquake(earth_level[1])
+        #earth_level = get_earthquake()
+        #earthquake(earth_level[1])
 
     except:
         print ("somethingerror_normal")
@@ -360,8 +360,8 @@ def jobforalarm():
         water_level = get_water()
         check_water(water_level)
 
-        earth_level = get_earthquake()
-        check_earthquake(earth_level[1])
+        #earth_level = get_earthquake()
+        #check_earthquake(earth_level[1])
     except:
         print ("somethingerror_alarm")
 
