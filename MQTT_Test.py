@@ -246,11 +246,12 @@ def check_temp(temp_status,alarm_temp):
     if temp_status < alarm_temp:
         glo_temp_flag = 0
 
-def check_power(voltage_status,alarm_voltage):
+def check_power(voltage_status,alarm_voltage,Powerdata):
     global glo_power_flag
     if voltage_status  >= alarm_voltage:
         if glo_power_flag == 0 :
             Power_alarm(voltage_status)
+            PowerManage(Powerdata)
             glo_power_flag = 1
     if voltage_status < alarm_voltage:
         glo_power_flag = 0
@@ -340,8 +341,7 @@ def jobforalarm():
             TempHumi(Evm_TH[0],Evm_TH[1])
 
         Powerdata = read_Main_PowerMeter(5)
-        check_power(Powerdata[0],100)
-        PowerManage(Powerdata)
+        check_power(Powerdata[0],100,Powerdata)
 
 
 schedule.every(1).minutes.do(jobforpublish)  
