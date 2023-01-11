@@ -283,7 +283,7 @@ def jobforpublish():
     except:
         print ("somethingerror_normal")
     
-    
+'''  
 def jobforalarm():
     try:
         alarm_temp = 28
@@ -315,7 +315,34 @@ def jobforalarm():
         print ("somethingerror_alarm")
     
     # print (get_earthquake())
-    
+''' 
+def jobforalarm():
+
+        alarm_temp = 28
+        FirePeople_value = get_FirePeople()
+        Fire_value = FirePeople_value[0]
+        People_value = FirePeople_value[1]
+        
+        # Fire_status publish and alarm
+        if Fire_value == 1:
+            Fire_Func(Fire_value)
+            check_fire(Fire_value)
+        # peopledetec_status publish and alarm
+        if People_value == 1:
+            peopledetec_Func(People_value)
+            check_people(People_value)
+        
+        # temperature value publish and alarm
+        Evm_TH = get_temphumi()
+        if Evm_TH[0] >= alarm_temp:
+            check_temp(Evm_TH[0],alarm_temp)
+            TempHumi(Evm_TH[0],Evm_TH[1])
+
+        Powerdata = read_Main_PowerMeter(5)
+        check_power(Powerdata[0],100)
+        PowerManage(Powerdata)
+
+
 schedule.every(1).minutes.do(jobforpublish)  
 schedule.every(1).seconds.do(jobforalarm)  
 
