@@ -316,7 +316,7 @@ if __name__ == '__main__':
         Powerdata = read_Main_PowerMeter(5)
         PowerManage(Powerdata )
 
-        
+        print (Powerdata)
         time.sleep(5) 
 
         '''
