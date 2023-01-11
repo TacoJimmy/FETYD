@@ -29,12 +29,12 @@ ser = serial.Serial(port='/dev/ttyS4', baudrate = 9600, parity=serial.PARITY_NON
 
 def read_Main_PowerMeter(ID):
     MainPW_meter = [0,0,0,0,0,0,0,0,0]
-    pw_va = master.execute(ID, cst.READ_HOLDING_REGISTERS, 312, 1)
-    pw_cur = master.execute(ID, cst.READ_HOLDING_REGISTERS, 322, 1)
-    pw_power = master.execute(ID, cst.READ_HOLDING_REGISTERS, 337, 2)
-    pw_pf = master.execute(ID, cst.READ_HOLDING_REGISTERS, 358, 1)
-    pw_consum = master.execute(ID, cst.READ_HOLDING_REGISTERS, 385, 2)
-    pw_DM = master.execute(ID, cst.READ_HOLDING_REGISTERS, 362, 2)
+    pw_va = master.execute(5, cst.READ_HOLDING_REGISTERS, 312, 1)
+    pw_cur = master.execute(5, cst.READ_HOLDING_REGISTERS, 322, 1)
+    pw_power = master.execute(5, cst.READ_HOLDING_REGISTERS, 337, 2)
+    pw_pf = master.execute(5, cst.READ_HOLDING_REGISTERS, 358, 1)
+    pw_consum = master.execute(5, cst.READ_HOLDING_REGISTERS, 385, 2)
+    pw_DM = master.execute(5, cst.READ_HOLDING_REGISTERS, 362, 2)
         
     MainPW_meter[0] = round(pw_va[0] * 0.1,1)
     MainPW_meter[1] = round(pw_cur[0] * 0.001,1)
