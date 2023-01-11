@@ -302,7 +302,7 @@ if __name__ == '__main__':
     while True:  
         
         Powerdata = read_Main_PowerMeter(5)
-        #PowerManage(Powerdata )
+        PowerManage(Powerdata )
 
         print (Powerdata)
         time.sleep(5) 
