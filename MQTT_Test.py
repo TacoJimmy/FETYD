@@ -16,6 +16,7 @@ glo_people_flag = 0
 glo_temp_flag = 0
 glo_power_flag = 0
 glo_water_flag = 0
+glo_earth_flag  = 0
 client = mqtt.Client()
 client.username_pw_set("acme","85024828")
 client.connect("210.68.227.123", 3881, 60)
@@ -111,7 +112,7 @@ def get_temphumi():
 def get_earthquake():
     try:
         earth = master.execute(1, cst.READ_HOLDING_REGISTERS, 286, 2) 
-        time.sleep(0.5)
+        time.sleep(1)
         earth_level = round(earth[0])
         earth_value = round(earth[1])
     
@@ -283,6 +284,18 @@ def check_water(water_level):
     if water_level != 0:
         glo_water_flag = 0
 
+
+def check_earthquake(earth_level):
+    global glo_earth_flag
+    if earth_level  == 0:
+        if glo_earth_flag > 1 :
+            earthquake_alarm()
+            earthquake(earth_level)
+            glo_earth_flag = 1
+    if earth_level != 1:
+        glo_earth_flag = 0
+
+
 def jobforpublish():
     try:
         alarm_temp = 28
@@ -313,8 +326,8 @@ def jobforpublish():
         Water_Func(water_level)
 
         # get earth_level
-        get_earthquake()
-        
+        earth_level = get_earthquake()
+        earthquake(earth_level[1])
 
     except:
         print ("somethingerror_normal")
@@ -347,7 +360,8 @@ def jobforalarm():
         water_level = get_water()
         check_water(water_level)
 
-
+        earth_level = get_earthquake()
+        check_earthquake(earth_level[1])
     except:
         print ("somethingerror_alarm")
 
