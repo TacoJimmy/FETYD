@@ -253,7 +253,7 @@ def check_power(voltage_status,alarm_voltage,Powerdata):
             Power_alarm(voltage_status)
             PowerManage(Powerdata)
             glo_power_flag = 1
-    if voltage_status < alarm_voltage:
+    if voltage_status > alarm_voltage:
         glo_power_flag = 0
 
 def jobforpublish():
@@ -319,7 +319,7 @@ def jobforalarm():
     # print (get_earthquake())
 ''' 
 def jobforalarm():
-
+    try:
         alarm_temp = 28
         FirePeople_value = get_FirePeople()
         Fire_value = FirePeople_value[0]
@@ -342,7 +342,8 @@ def jobforalarm():
 
         Powerdata = read_Main_PowerMeter(5)
         check_power(Powerdata[0],100,Powerdata)
-
+    except:
+        print ("somethingerror_alarm")
 
 schedule.every(1).minutes.do(jobforpublish)  
 schedule.every(1).seconds.do(jobforalarm)  
