@@ -15,6 +15,7 @@ glo_fire_flag = 0
 glo_people_flag = 0
 glo_temp_flag = 0
 glo_power_flag = 0
+glo_water_flag = 0
 client = mqtt.Client()
 client.username_pw_set("acme","85024828")
 client.connect("210.68.227.123", 3881, 60)
@@ -120,8 +121,13 @@ def get_water():
     time.sleep(0.5)
     water_level = round(earth[0])
     water_value = round(earth[1])
+
+    if water_level >= 300 :
+        water_data = 0
+    else:
+        water_data = 1
     
-    return water_level,water_level
+    return water_data
 
 def IPC_Func():
     payload_ipc = {"Bank_Name":"南京分公司",
@@ -141,8 +147,8 @@ def Elec_Func():
     print (json.dumps(payload_elec))
     client.publish("yuanta/electricity", json.dumps(payload_elec))
     
-def Water_Func():
-    payload_WaterNode = {"WaterNode_01":1}
+def Water_Func(water_level):
+    payload_WaterNode = {"WaterNode_01":water_level}
     print (json.dumps(payload_WaterNode))
     client.publish("yuanta/water", json.dumps(payload_WaterNode))
     
@@ -264,6 +270,16 @@ def check_power(voltage_status,alarm_voltage,Powerdata):
     if voltage_status > alarm_voltage:
         glo_power_flag = 0
 
+def check_water(water_level):
+    global glo_water_flag
+    if water_level  == 0:
+        if glo_water_flag == 0 :
+            water_alarm()
+            Water_Func(water_level)
+            glo_water_flag = 1
+    if water_level != 0:
+        glo_water_flag = 0
+
 def jobforpublish():
     try:
         alarm_temp = 28
@@ -289,6 +305,10 @@ def jobforpublish():
         Powerdata = read_Main_PowerMeter(5)
         PowerManage(Powerdata)
 
+        # get water
+        water_level = get_water()
+        Water_Func(water_level)
+        
 
     except:
         print ("somethingerror_normal")
@@ -317,6 +337,11 @@ def jobforalarm():
 
         Powerdata = read_Main_PowerMeter(5)
         check_power(Powerdata[0],100,Powerdata)
+
+        water_level = get_water()
+        check_water(water_level)
+
+
     except:
         print ("somethingerror_alarm")
 
