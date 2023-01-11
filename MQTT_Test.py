@@ -187,6 +187,11 @@ def Temperature_alarm(temp):
     print (json.dumps(payload_temperaturealarm))
     client.publish("yuanta/th_error", json.dumps(payload_temperaturealarm))
 
+def Power_alarm(voltage_status):
+    payload_voltagealarm = {"voltage_error_r":voltage_status}
+    print (json.dumps(payload_voltagealarm))
+    client.publish("yuanta/th_error", json.dumps(payload_voltagealarm))
+
 def Humidity_alarm(humi):
     payload_Humidityalarm = {"Humidity":humi}
     print (json.dumps(payload_Humidityalarm))
@@ -240,6 +245,15 @@ def check_temp(temp_status,alarm_temp):
     if temp_status < alarm_temp:
         glo_temp_flag = 0
 
+def check_power(voltage_status,alarm_voltage):
+    global glo_power_flag
+    if voltage_status  >= alarm_voltage:
+        if glo_power_flag == 0 :
+            Power_alarm(voltage_status)
+            glo_power_flag = 1
+    if voltage_status < alarm_voltage:
+        glo_power_flag = 0
+
 def jobforpublish():
     try:
         alarm_temp = 28
@@ -262,6 +276,9 @@ def jobforpublish():
         TempHumi(Evm_TH[0],Evm_TH[1])
 
         # get power data
+        Powerdata = read_Main_PowerMeter(5)
+        PowerManage(Powerdata)
+
 
     except:
         print ("somethingerror_normal")
@@ -288,6 +305,12 @@ def jobforalarm():
         if Evm_TH[0] >= alarm_temp:
             check_temp(Evm_TH[0],alarm_temp)
             TempHumi(Evm_TH[0],Evm_TH[1])
+
+        Powerdata = read_Main_PowerMeter(5)
+        check_power(Powerdata[0],100)
+        PowerManage(Powerdata)
+
+
     except:
         print ("somethingerror_alarm")
     
@@ -300,17 +323,10 @@ schedule.every(1).seconds.do(jobforalarm)
 if __name__ == '__main__':  
 
     while True:  
-        
-        Powerdata = read_Main_PowerMeter(5)
-        PowerManage(Powerdata )
 
-        print (Powerdata)
-        time.sleep(5) 
-
-        '''
         schedule.run_pending()  
         time.sleep(1) 
-        '''
+
 
 '''
 
