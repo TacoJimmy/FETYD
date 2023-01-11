@@ -353,7 +353,7 @@ if __name__ == '__main__':
 
     while True:  
 
-        get_earthquake()
+        print(get_earthquake())
 
         time.sleep(5)
 
