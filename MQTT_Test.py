@@ -171,7 +171,7 @@ def PowerManage(Powerdata):
                         "loop_name":"mainpower",
                         }
     print (json.dumps(payload_power))
-    client.publish("yuanta/th", json.dumps(payload_power))
+    client.publish("yuanta/electricity", json.dumps(payload_power))
     
 def earthquake():
     payload_earthquake = {"earthquake":0,"sensor_alive":1}
@@ -191,7 +191,7 @@ def Temperature_alarm(temp):
 def Power_alarm(voltage_status):
     payload_voltagealarm = {"voltage_error_r":voltage_status}
     print (json.dumps(payload_voltagealarm))
-    client.publish("yuanta/th_error", json.dumps(payload_voltagealarm))
+    client.publish("yuanta/electricity_error", json.dumps(payload_voltagealarm))
 
 def Humidity_alarm(humi):
     payload_Humidityalarm = {"Humidity":humi}
