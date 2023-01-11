@@ -184,7 +184,7 @@ def earthquake_alarm():
     client.publish("yuanta/earthquake_error", json.dumps(payload_earthquakealarm))
     
 def Temperature_alarm(temp):
-    payload_temperaturealarm = {"Temperature":temp}
+    payload_temperaturealarm = {"Temperature":0}
     print (json.dumps(payload_temperaturealarm))
     client.publish("yuanta/th_error", json.dumps(payload_temperaturealarm))
 
