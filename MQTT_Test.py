@@ -330,7 +330,7 @@ if __name__ == '__main__':
 
         #schedule.run_pending()  
         #time.sleep(1) 
-        get_water()
+        print (get_water())
         time.sleep(5)
 
 '''
