@@ -14,6 +14,7 @@ import schedule
 glo_fire_flag = 0
 glo_people_flag = 0
 glo_temp_flag = 0
+glo_power_flag = 0
 client = mqtt.Client()
 client.username_pw_set("acme","85024828")
 client.connect("210.68.227.123", 3881, 60)
