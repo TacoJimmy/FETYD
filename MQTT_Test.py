@@ -115,6 +115,14 @@ def get_earthquake():
     
     return earth_level,earth_value
 
+def get_water():
+    earth = master.execute(1, cst.READ_HOLDING_REGISTERS, 282, 2) 
+    time.sleep(0.5)
+    water_level = round(earth[0])
+    water_value = round(earth[1])
+    
+    return water_level,water_level
+
 def IPC_Func():
     payload_ipc = {"Bank_Name":"南京分公司",
                    "Bank_longitude":25.052522264728704,
@@ -322,7 +330,7 @@ if __name__ == '__main__':
 
         #schedule.run_pending()  
         #time.sleep(1) 
-        earthquake()
+        get_water()
         time.sleep(5)
 
 '''
