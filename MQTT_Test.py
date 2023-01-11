@@ -333,7 +333,7 @@ def jobforpublish():
         print ("somethingerror_normal")
     
 def jobforalarm():
-    #try:
+    try:
         alarm_temp = 28
         FirePeople_value = get_FirePeople()
         Fire_value = FirePeople_value[0]
@@ -362,8 +362,8 @@ def jobforalarm():
 
         #earth_level = get_earthquake()
         #check_earthquake(earth_level[1])
-    #except:
-        #print ("somethingerror_alarm")
+    except:
+        print ("somethingerror_alarm")
 
 schedule.every(1).minutes.do(jobforpublish)  
 schedule.every(1).seconds.do(jobforalarm)  
