@@ -355,7 +355,7 @@ if __name__ == '__main__':
 
         print(get_earthquake())
 
-        time.sleep(5)
+        time.sleep(1)
 
         '''
         schedule.run_pending()  
