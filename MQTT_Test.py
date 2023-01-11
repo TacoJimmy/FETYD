@@ -248,7 +248,7 @@ def check_temp(temp_status,alarm_temp):
 
 def check_power(voltage_status,alarm_voltage,Powerdata):
     global glo_power_flag
-    if voltage_status  >= alarm_voltage:
+    if voltage_status  <= alarm_voltage:
         if glo_power_flag == 0 :
             Power_alarm(voltage_status)
             PowerManage(Powerdata)
