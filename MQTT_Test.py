@@ -116,7 +116,7 @@ def get_earthquake():
     return earth_level,earth_value
 
 def get_water():
-    earth = master.execute(1, cst.READ_HOLDING_REGISTERS, 282, 2) 
+    earth = master.execute(20, cst.READ_HOLDING_REGISTERS, 282, 2) 
     time.sleep(0.5)
     water_level = round(earth[0])
     water_value = round(earth[1])
