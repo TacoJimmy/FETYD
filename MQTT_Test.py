@@ -373,14 +373,9 @@ if __name__ == '__main__':
 
     while True:  
 
-        print(get_earthquake())
-
-        time.sleep(1)
-
-        '''
         schedule.run_pending()  
         time.sleep(1) 
-        '''
+        
 '''
 
 if __name__ == '__main__':
