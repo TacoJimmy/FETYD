@@ -189,7 +189,7 @@ def Temperature_alarm(temp):
     client.publish("yuanta/th_error", json.dumps(payload_temperaturealarm))
 
 def Power_alarm(voltage_status):
-    payload_voltagealarm = {"voltage_error_r":voltage_status}
+    payload_voltagealarm = {"voltage_error_r":0}
     print (json.dumps(payload_voltagealarm))
     client.publish("yuanta/electricity_error", json.dumps(payload_voltagealarm))
 
