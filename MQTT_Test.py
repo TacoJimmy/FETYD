@@ -61,7 +61,7 @@ def read_Main_PowerMeter(ID):
         MainPW_meter[4] = 0
         MainPW_meter[5] = 0
         MainPW_meter[6] = 0
-        MainPW_meter[7] = 2
+        MainPW_meter[7] = 0
         MainPW_meter[8] = 0
         return (MainPW_meter)
 
