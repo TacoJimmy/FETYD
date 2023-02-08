@@ -37,6 +37,9 @@ def modbus_tcp():
 
 def read_Main_PowerMeter(ID):
     try:
+        master = modbus_rtu.RtuMaster(serial.Serial(port='/dev/ttyS1', baudrate=9600, bytesize=8, parity='N', stopbits=1, xonxoff=0))
+        master.set_timeout(5.0)
+        master.set_verbose(True)
         MainPW_meter = [0,0,0,0,0,0,0,0,0]
         pw_va = master.execute(5, cst.READ_HOLDING_REGISTERS, 311, 2)
         pw_cur = master.execute(5, cst.READ_HOLDING_REGISTERS, 321, 2)
@@ -60,7 +63,7 @@ def read_Main_PowerMeter(ID):
         #time.sleep(0.5)
         return (MainPW_meter)
     except:
-        modbus_tcp()
+        
         print("error_connectting")
 
 
