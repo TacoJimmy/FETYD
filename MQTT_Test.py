@@ -67,7 +67,7 @@ def get_temphumi():
     except:
         print("error_ModbusRTU_temphumi")
         master.close
-        pass
+        
 
 def get_earthquake():
     try:
@@ -82,7 +82,7 @@ def get_earthquake():
     except:
         print("error_ModbusRTU_earthquake")
         master.close
-        pass
+        
 
 def get_water():
     try:
@@ -391,6 +391,7 @@ if __name__ == '__main__':
         print (read_Main_PowerMeter(5))
         print (get_water())
         print (get_temphumi())
+        print (get_FirePeople())
         time.sleep(1)
         '''
         schedule.run_pending()  
