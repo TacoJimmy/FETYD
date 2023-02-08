@@ -298,6 +298,7 @@ def check_earthquake(earth_level):
 
 def jobforpublish():
     try:
+        '''
         alarm_temp = 28
         #check people and fire status
         FirePeople_value = get_FirePeople()
@@ -316,15 +317,15 @@ def jobforpublish():
         check_temp(Evm_TH[0],alarm_temp)
         print (Evm_TH)
         TempHumi(Evm_TH[0],Evm_TH[1])
-
+        '''
         # get power data
         Powerdata = read_Main_PowerMeter(5)
         PowerManage(Powerdata)
-
+        '''
         # get water
         water_level = get_water()
         Water_Func(water_level)
-
+        '''
         # get earth_level
         #earth_level = get_earthquake()
         #earthquake(earth_level[1])
@@ -334,6 +335,7 @@ def jobforpublish():
     
 def jobforalarm():
     try:
+        '''
         alarm_temp = 28
         FirePeople_value = get_FirePeople()
         Fire_value = FirePeople_value[0]
@@ -356,7 +358,7 @@ def jobforalarm():
 
         Powerdata = read_Main_PowerMeter(5)
         check_power(Powerdata[0],100,Powerdata)
-
+        '''
         #water_level = get_water()
         #check_water(water_level)
 
