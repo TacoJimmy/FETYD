@@ -54,12 +54,12 @@ def read_Main_PowerMeter(ID):
         master.close
         
         
-def get_temphumi():
+def get_temphumi(ID):
     try:
         master = modbus_rtu.RtuMaster(serial.Serial(port='/dev/ttyS1', baudrate=9600, bytesize=8, parity='N', stopbits=1, xonxoff=0))
         master.set_timeout(5.0)
         master.set_verbose(True)
-        temp = master.execute(10, cst.READ_HOLDING_REGISTERS, 3, 2) 
+        temp = master.execute(ID, cst.READ_HOLDING_REGISTERS, 3, 2) 
         evm_temp = round(temp[0]*0.01,1)
         evm_humi = round(temp[1]*0.01,1)
     
@@ -85,6 +85,7 @@ def get_earthquake():
         
 
 def get_water():
+    water_limit = 300
     try:
         master = modbus_rtu.RtuMaster(serial.Serial(port='/dev/ttyS1', baudrate=9600, bytesize=8, parity='N', stopbits=1, xonxoff=0))
         master.set_timeout(5.0)
@@ -93,13 +94,12 @@ def get_water():
         water_level = round(earth[0])
         water_value = round(earth[1])
 
-        if water_level >= 300 :
+        if water_level >= water_limit :
             water_data = 0
         else:
             water_data = 1
     
-        #return water_data
-        return water_level,water_value
+        return water_data
     except:
         print("error_ModbusRTU_water")
         master.close
@@ -161,21 +161,27 @@ def Water_Func(water_level):
     client.publish("yuanta/water", json.dumps(payload_WaterNode))
     
 def Fire_Func(fire_status):
-    if fire_status == 1 :
-        payload_fire = {"FireNode_01":0}
-    elif fire_status == 0 :
-        payload_fire = {"FireNode_01":1}
-    print (json.dumps(payload_fire))
-    client.publish("yuanta/fire", json.dumps(payload_fire))
-    
+    try:
+        if fire_status == 1 :
+            payload_fire = {"FireNode_01":0}
+        elif fire_status == 0 :
+            payload_fire = {"FireNode_01":1}
+        print (json.dumps(payload_fire))
+        client.publish("yuanta/fire", json.dumps(payload_fire))
+    except:
+        print ("can't publish Fire")
+
 def peopledetec_Func(people_status):
-    if people_status == 1 :
-        payload_peopledetec = {"PeopleDetec":0}
-    elif people_status == 0 :
-        payload_peopledetec = {"PeopleDetec":1}
-    print (json.dumps(payload_peopledetec))
-    client.publish("yuanta/peopledetec", json.dumps(payload_peopledetec))
-    
+    try:
+        if people_status == 1 :
+            payload_peopledetec = {"PeopleDetec":0}
+        elif people_status == 0 :
+            payload_peopledetec = {"PeopleDetec":1}
+        print (json.dumps(payload_peopledetec))
+        client.publish("yuanta/peopledetec", json.dumps(payload_peopledetec))
+    except:
+        print ("can't publish people detection")
+
 def TempHumi(temp,humi):
     payload_TempHumi = {"Temperature":temp,"Humidity":humi}
     print (json.dumps(payload_TempHumi))
@@ -196,8 +202,8 @@ def PowerManage(Powerdata):
     print (json.dumps(payload_power))
     client.publish("yuanta/electricity", json.dumps(payload_power))
     
-def earthquake():
-    payload_earthquake = {"earthquake":0,"sensor_alive":1}
+def earthquake(earthquake_level):
+    payload_earthquake = {"earthquake":earthquake_level,"sensor_alive":1}
     print (json.dumps(payload_earthquake))
     client.publish("yuanta/earthquake", json.dumps(payload_earthquake))
     
@@ -247,6 +253,7 @@ def check_fire(fire_status):
     if fire_status  == 1:
         if glo_fire_flag == 0 :
             fire_alarm()
+            Fire_Func(fire_status)
             glo_fire_flag = 1
     if fire_status  != 1:
         glo_fire_flag = 0
@@ -256,15 +263,17 @@ def check_people(people_status):
     if people_status  == 1:
         if glo_people_flag == 0 :
             peopledetec_alarm()
+            peopledetec_Func(people_status)
             glo_people_flag = 1
     if people_status  != 1:
         glo_people_flag = 0
 
-def check_temp(temp_status,alarm_temp):
+def check_temp(temp_status,humi_status,alarm_temp):
     global glo_temp_flag
     if temp_status  >= alarm_temp:
         if glo_temp_flag == 0 :
             Temperature_alarm(temp_status)
+            TempHumi(temp_status,humi_status)
             glo_temp_flag = 1
     if temp_status < alarm_temp:
         glo_temp_flag = 0
@@ -303,72 +312,57 @@ def check_earthquake(earth_level):
 
 def jobforpublish():
     try:
-        '''
-        alarm_temp = 28
-        #check people and fire status
-        FirePeople_value = get_FirePeople()
-        Fire_value = FirePeople_value[0]
-        People_value = FirePeople_value[1]
         
-        # Fire_status publish and alarm
-        Fire_Func(Fire_value)
-        check_fire(Fire_value)
-        # peopledetec_status publish and alarm
-        peopledetec_Func(People_value)
-        check_people(People_value)
-        
-        # temperature value publish and alarm
-        Evm_TH = get_temphumi()
-        check_temp(Evm_TH[0],alarm_temp)
-        print (Evm_TH)
-        TempHumi(Evm_TH[0],Evm_TH[1])
-        '''
-        # get power data
-        Powerdata = read_Main_PowerMeter(5)
+        # publish power data
+        Powerdata = read_Main_PowerMeter(5) #PowerMeter ID = 5
         PowerManage(Powerdata)
-        '''
+        
+        # publish temperature and humidity
+        Evm_TH = get_temphumi(10)
+        TempHumi(Evm_TH[0],Evm_TH[1])
+        
+        # publish People Detect and fire status
+        FirePeople_value = get_FirePeople()
+        Fire_Func(FirePeople_value[0]) #FirePeople_value[0] = fire status
+        peopledetec_Func(FirePeople_value[1]) #FirePeople_value[0] = people detect status
+        
         # get water
         water_level = get_water()
         Water_Func(water_level)
-        '''
+        
         # get earth_level
-        #earth_level = get_earthquake()
-        #earthquake(earth_level[1])
+        earth_level = get_earthquake()
+        earthquake(earth_level[1])
 
     except:
         print ("somethingerror_normal")
     
 def jobforalarm():
     try:
-        '''
+        
+        # temperature alarm
         alarm_temp = 28
+        Evm_TH = get_temphumi(10)
+        check_temp(Evm_TH[0],Evm_TH[1],alarm_temp)
+        
+        # Fire_status and people_status alarm
         FirePeople_value = get_FirePeople()
-        Fire_value = FirePeople_value[0]
-        People_value = FirePeople_value[1]
+        check_fire(FirePeople_value[0])
+        check_people(FirePeople_value[1])
         
-        # Fire_status publish and alarm
-        if Fire_value == 1:
-            Fire_Func(Fire_value)
-            check_fire(Fire_value)
-        # peopledetec_status publish and alarm
-        if People_value == 1:
-            peopledetec_Func(People_value)
-            check_people(People_value)
+        # water_status alarm
+        water_level = get_water()
+        check_water(water_level)
         
-        # temperature value publish and alarm
-        Evm_TH = get_temphumi()
-        if Evm_TH[0] >= alarm_temp:
-            check_temp(Evm_TH[0],alarm_temp)
-            TempHumi(Evm_TH[0],Evm_TH[1])
-
+        # power_status alarm
         Powerdata = read_Main_PowerMeter(5)
         check_power(Powerdata[0],100,Powerdata)
-        '''
-        #water_level = get_water()
-        #check_water(water_level)
+        
+        
+        # earthquake_status alarm
+        earth_level = get_earthquake()
+        check_earthquake(earth_level[1])
 
-        #earth_level = get_earthquake()
-        #check_earthquake(earth_level[1])
     except:
         print ("somethingerror_alarm")
 
@@ -380,55 +374,13 @@ if __name__ == '__main__':
     MQTT_Connect()
 
     while True:  
-
+        '''
         print (get_earthquake())
         print (read_Main_PowerMeter(5))
         print (get_water())
-        print (get_temphumi())
+        print (get_temphumi(10))
         print (get_FirePeople())
         time.sleep(1)
         '''
         schedule.run_pending()  
         time.sleep(1) 
-        '''
-'''
-
-if __name__ == '__main__':
-    while True:
-        print (get_FirePeople())
-        print (get_temphumi())
-        time.sleep(1)
-
-if __name__ == '__main__':
-    alarm_temp = 22
-    while True:
-        #print(get_ADAM())
-        
-        #check people and fire status
-        FirePeople_value = get_FirePeople()
-        Fire_value = FirePeople_value[0]
-        People_value = FirePeople_value[1]
-        
-        # Fire_status publish and alarm
-        Fire_Func(Fire_value)
-        check_fire(Fire_value)
-        # peopledetec_status publish and alarm
-        peopledetec_Func(People_value)
-        check_people(People_value)
-        
-        # temperature value publish and alarm
-        Evm_TH = get_temphumi()
-        check_temp(Evm_TH[0],alarm_temp)
-        print (Evm_TH)
-        TempHumi(Evm_TH[0],Evm_TH[1])
-        
-        
-        
-        
-        time.sleep(5)
-
-'''
-       
-        
-        
-        
