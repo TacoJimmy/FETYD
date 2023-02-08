@@ -20,29 +20,9 @@ glo_earth_flag  = 0
 
 def MQTT_Connect():
     global client
-    try:
-        client = mqtt.Client()
-        client.username_pw_set("acme","85024828")
-        client.connect("210.68.227.123", 3881, 60)
-    except:
-        pass
-def ModbusRTU_Connect():
-    global master
-    try:
-        master = modbus_rtu.RtuMaster(serial.Serial(port='/dev/ttyS1', baudrate=9600, bytesize=8, parity='N', stopbits=1, xonxoff=0))
-        master.set_timeout(5.0)
-        master.set_verbose(True)
-        print("ModbusRTU_connectting")
-    except:
-        pass
-
-def ModbusASCII_Connect():
-    global ser
-    try:
-        ser = serial.Serial(port='/dev/ttyS4', baudrate = 9600, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, bytesize=serial.EIGHTBITS, timeout=1)
-    except:
-        pass
-
+    client = mqtt.Client()
+    client.username_pw_set("acme","85024828")
+    client.connect("210.68.227.123", 3881, 60)
 
 def read_Main_PowerMeter(ID):
     try:
@@ -72,7 +52,8 @@ def read_Main_PowerMeter(ID):
     except:
         print("error_ModbusRTU_PowerMaeter")
         master.close
-        #ModbusRTU_Connect()
+        
+        
 def get_temphumi():
     try:
         master = modbus_rtu.RtuMaster(serial.Serial(port='/dev/ttyS1', baudrate=9600, bytesize=8, parity='N', stopbits=1, xonxoff=0))
@@ -86,7 +67,7 @@ def get_temphumi():
     except:
         print("error_ModbusRTU_temphumi")
         master.close
-        #ModbusRTU_Connect()
+        pass
 
 def get_earthquake():
     try:
@@ -101,7 +82,7 @@ def get_earthquake():
     except:
         print("error_ModbusRTU_earthquake")
         master.close
-        #ModbusRTU_Connect()
+        pass
 
 def get_water():
     try:
@@ -122,8 +103,7 @@ def get_water():
     except:
         print("error_ModbusRTU_water")
         master.close
-        
-        #ModbusRTU_Connect()
+        pass
 
 
 
@@ -139,6 +119,7 @@ def setmqtt():
 
 def get_FirePeople():
     try:
+        ser = serial.Serial(port='/dev/ttyS4', baudrate = 9600, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, bytesize=serial.EIGHTBITS, timeout=1)
         ser.write(b'$016\r\n') # send command for gate Di data
         output = ser.read(9) # Read 9 bytes from serial buffer 
         #print (output)
@@ -160,14 +141,7 @@ def get_FirePeople():
     except:
         print("error_ModbusASCII")
         ser.close
-        ModbusASCII_Connect()
-
-def get_ADAM():
-    ser.write(b'$016\r\n') # send command for gate Di data
-    output = ser.read(9) # Read 9 bytes from serial buffer 
-    
-    return output
-
+        pass
 
 def IPC_Func():
     payload_ipc = {"Bank_Name":"南京分公司",
@@ -410,8 +384,6 @@ schedule.every(1).seconds.do(jobforalarm)
 
 if __name__ == '__main__':  
     MQTT_Connect()
-    #ModbusRTU_Connect()
-    ModbusASCII_Connect()
 
     while True:  
 
