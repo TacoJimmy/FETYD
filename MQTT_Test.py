@@ -121,7 +121,7 @@ def get_FirePeople():
     try:
         ser = serial.Serial(port='/dev/ttyS4', baudrate = 9600, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, bytesize=serial.EIGHTBITS, timeout=1)
         ser.write(b'$016\r\n') # send command for gate Di data
-        output = int.from_bytes(ser.read(9)) # Read 9 bytes from serial buffer 
+        output = int.from_bytes(ser.read(9),"big") # Read 9 bytes from serial buffer 
         print(output)
         '''
         FirePeople_status = int(output[4])
