@@ -46,6 +46,9 @@ def ModbusASCII_Connect():
 
 def read_Main_PowerMeter(ID):
     try:
+        master = modbus_rtu.RtuMaster(serial.Serial(port='/dev/ttyS1', baudrate=9600, bytesize=8, parity='N', stopbits=1, xonxoff=0))
+        master.set_timeout(5.0)
+        master.set_verbose(True)
         MainPW_meter = [0,0,0,0,0,0,0,0,0]
         pw_va = master.execute(ID, cst.READ_HOLDING_REGISTERS, 311, 2)
         pw_cur = master.execute(ID, cst.READ_HOLDING_REGISTERS, 321, 2)
@@ -69,9 +72,12 @@ def read_Main_PowerMeter(ID):
     except:
         print("error_ModbusRTU_PowerMaeter")
         master.close
-        ModbusRTU_Connect()
+        #ModbusRTU_Connect()
 def get_temphumi():
     try:
+        master = modbus_rtu.RtuMaster(serial.Serial(port='/dev/ttyS1', baudrate=9600, bytesize=8, parity='N', stopbits=1, xonxoff=0))
+        master.set_timeout(5.0)
+        master.set_verbose(True)
         temp = master.execute(10, cst.READ_HOLDING_REGISTERS, 3, 2) 
         evm_temp = round(temp[0]*0.01,1)
         evm_humi = round(temp[1]*0.01,1)
@@ -80,10 +86,13 @@ def get_temphumi():
     except:
         print("error_ModbusRTU_temphumi")
         master.close
-        ModbusRTU_Connect()
+        #ModbusRTU_Connect()
 
 def get_earthquake():
     try:
+        master = modbus_rtu.RtuMaster(serial.Serial(port='/dev/ttyS1', baudrate=9600, bytesize=8, parity='N', stopbits=1, xonxoff=0))
+        master.set_timeout(5.0)
+        master.set_verbose(True)
         earth = master.execute(1, cst.READ_HOLDING_REGISTERS, 286, 2) 
         earth_level = round(earth[0])
         earth_value = round(earth[1])
@@ -92,10 +101,13 @@ def get_earthquake():
     except:
         print("error_ModbusRTU_earthquake")
         master.close
-        ModbusRTU_Connect()
+        #ModbusRTU_Connect()
 
 def get_water():
     try:
+        master = modbus_rtu.RtuMaster(serial.Serial(port='/dev/ttyS1', baudrate=9600, bytesize=8, parity='N', stopbits=1, xonxoff=0))
+        master.set_timeout(5.0)
+        master.set_verbose(True)
         earth = master.execute(20, cst.READ_HOLDING_REGISTERS, 282, 2) 
         water_level = round(earth[0])
         water_value = round(earth[1])
@@ -110,7 +122,11 @@ def get_water():
     except:
         print("error_ModbusRTU_water")
         master.close
-        ModbusRTU_Connect()
+        
+        #ModbusRTU_Connect()
+
+
+
 
 
 def setmqtt():
@@ -121,35 +137,30 @@ def setmqtt():
     client.username_pw_set("acme","85024828")
     client.connect("210.68.227.123", 3881, 60)
 
-def setmodbus():
-    master = modbus_rtu.RtuMaster(serial.Serial(port='/dev/ttyS1', baudrate=9600, bytesize=8, parity='N', stopbits=1, xonxoff=0))
-    master.set_timeout(5.0)
-    master.set_verbose(True)
-
-def setascii():
-    ser = serial.Serial(port='/dev/ttyS4', baudrate = 9600, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, bytesize=serial.EIGHTBITS, timeout=1)
-
-
-
 def get_FirePeople():
-    ser.write(b'$016\r\n') # send command for gate Di data
-    output = ser.read(9) # Read 9 bytes from serial buffer 
-    #print (output)
-    output2 = str(output)
-    FirePeople_status = int(output2[4])
+    try:
+        ser.write(b'$016\r\n') # send command for gate Di data
+        output = ser.read(9) # Read 9 bytes from serial buffer 
+        #print (output)
+        output2 = str(output)
+        FirePeople_status = int(output2[4])
     
     
-    if FirePeople_status == 2 or FirePeople_status == 3:
-        Fire_status = 1
-    else:
-        Fire_status = 0
+        if FirePeople_status == 2 or FirePeople_status == 3:
+            Fire_status = 1
+        else:
+            Fire_status = 0
         
-    if FirePeople_status == 1 or FirePeople_status == 3:
-        People_status = 1
-    else:
-        People_status = 0
+        if FirePeople_status == 1 or FirePeople_status == 3:
+            People_status = 1
+        else:
+            People_status = 0
     
-    return Fire_status,People_status
+        return Fire_status,People_status
+    except:
+        print("error_ModbusASCII")
+        ser.close
+        ModbusASCII_Connect()
 
 def get_ADAM():
     ser.write(b'$016\r\n') # send command for gate Di data
@@ -399,7 +410,7 @@ schedule.every(1).seconds.do(jobforalarm)
 
 if __name__ == '__main__':  
     MQTT_Connect()
-    ModbusRTU_Connect()
+    #ModbusRTU_Connect()
     ModbusASCII_Connect()
 
     while True:  
