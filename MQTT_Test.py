@@ -197,6 +197,7 @@ def PowerManage(Powerdata):
                         "pf":Powerdata[5],
                         "energy":Powerdata[6],
                         "emsdevicealive":Powerdata[7],
+                        "DM":Powerdata[8],
                         "loop_name":"mainpower",
                         }
     print (json.dumps(payload_power))
@@ -387,10 +388,9 @@ if __name__ == '__main__':
     while True:  
 
 
-        Powerdata = read_Main_PowerMeter(5)
-        print (Powerdata)
-        #schedule.run_pending()  
-        #time.sleep(1) 
+        
+        schedule.run_pending()  
+        time.sleep(1) 
         
 '''
 
