@@ -72,7 +72,7 @@ def read_Main_PowerMeter(ID):
 def get_temphumi():
     try:
         temp = master.execute(10, cst.READ_HOLDING_REGISTERS, 3, 2) 
-        time.sleep(0.5)
+        #time.sleep(0.5)
         evm_temp = round(temp[0]*0.01,1)
         evm_humi = round(temp[1]*0.01,1)
     
@@ -84,7 +84,7 @@ def get_temphumi():
 def get_earthquake():
     try:
         earth = master.execute(1, cst.READ_HOLDING_REGISTERS, 286, 2) 
-        time.sleep(0.5)
+        #time.sleep(0.5)
         earth_level = round(earth[0])
         earth_value = round(earth[1])
     
@@ -96,7 +96,7 @@ def get_earthquake():
 def get_water():
     try:
         earth = master.execute(20, cst.READ_HOLDING_REGISTERS, 282, 2) 
-        time.sleep(0.5)
+        #time.sleep(0.5)
         water_level = round(earth[0])
         water_value = round(earth[1])
 
