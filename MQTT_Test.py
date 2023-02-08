@@ -69,6 +69,47 @@ def read_Main_PowerMeter(ID):
     except:
         print("error_ModbusRTU_PowerMaeter")
         ModbusRTU_Connect()
+def get_temphumi():
+    try:
+        temp = master.execute(10, cst.READ_HOLDING_REGISTERS, 3, 2) 
+        time.sleep(0.5)
+        evm_temp = round(temp[0]*0.01,1)
+        evm_humi = round(temp[1]*0.01,1)
+    
+        return evm_temp,evm_humi
+    except:
+        print("error_ModbusRTU_temphumi")
+        ModbusRTU_Connect()
+
+def get_earthquake():
+    try:
+        earth = master.execute(1, cst.READ_HOLDING_REGISTERS, 286, 2) 
+        time.sleep(0.5)
+        earth_level = round(earth[0])
+        earth_value = round(earth[1])
+    
+        return earth_level,earth_value
+    except:
+        print("error_ModbusRTU_earthquake")
+        ModbusRTU_Connect()
+
+def get_water():
+    try:
+        earth = master.execute(20, cst.READ_HOLDING_REGISTERS, 282, 2) 
+        time.sleep(0.5)
+        water_level = round(earth[0])
+        water_value = round(earth[1])
+
+        if water_level >= 300 :
+            water_data = 0
+        else:
+            water_data = 1
+    
+        #return water_data
+        return water_level,water_value
+    except:
+        print("error_ModbusRTU_water")
+        ModbusRTU_Connect()
 
 
 def setmqtt():
@@ -115,47 +156,6 @@ def get_ADAM():
     
     return output
 
-def get_temphumi():
-    try:
-        temp = master.execute(10, cst.READ_HOLDING_REGISTERS, 3, 2) 
-        time.sleep(0.5)
-        evm_temp = round(temp[0]*0.01,1)
-        evm_humi = round(temp[1]*0.01,1)
-    
-        return evm_temp,evm_humi
-    except:
-        print("error_ModbusRTU_temphumi")
-        ModbusRTU_Connect()
-
-def get_earthquake():
-    try:
-        earth = master.execute(1, cst.READ_HOLDING_REGISTERS, 286, 2) 
-        time.sleep(1)
-        earth_level = round(earth[0])
-        earth_value = round(earth[1])
-    
-        return earth_level,earth_value
-    except:
-        print("error_ModbusRTU_earthquake")
-        ModbusRTU_Connect()
-
-def get_water():
-    try:
-        earth = master.execute(20, cst.READ_HOLDING_REGISTERS, 282, 2) 
-        time.sleep(0.5)
-        water_level = round(earth[0])
-        water_value = round(earth[1])
-
-        if water_level >= 300 :
-            water_data = 0
-        else:
-            water_data = 1
-    
-        #return water_data
-        return water_level,water_value
-    except:
-        print("error_ModbusRTU_water")
-        ModbusRTU_Connect()
 
 def IPC_Func():
     payload_ipc = {"Bank_Name":"南京分公司",
