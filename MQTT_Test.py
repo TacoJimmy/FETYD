@@ -143,7 +143,8 @@ def get_water():
     else:
         water_data = 1
     
-    return water_data
+    #return water_data
+    return water_level,water_value
 
 def IPC_Func():
     payload_ipc = {"Bank_Name":"南京分公司",
