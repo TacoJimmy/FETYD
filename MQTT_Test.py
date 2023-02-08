@@ -43,8 +43,16 @@ def ModbusASCII_Connect():
     except:
         pass
 
-def read_Main_PowerMeter(ID):
+
+def get_ModbusRtu_data():
     try:
+        print (read_Main_PowerMeter(5))
+    except:
+        print("error_ModbusRTU")
+        ModbusRTU_Connect()
+
+def read_Main_PowerMeter(ID):
+    #try:
         MainPW_meter = [0,0,0,0,0,0,0,0,0]
         pw_va = master.execute(ID, cst.READ_HOLDING_REGISTERS, 311, 2)
         pw_cur = master.execute(ID, cst.READ_HOLDING_REGISTERS, 321, 2)
@@ -65,9 +73,8 @@ def read_Main_PowerMeter(ID):
         master.close()
         
         return (MainPW_meter)
-    except:
-        print("error_ModbusRTU")
-        ModbusRTU_Connect()
+    #except:
+        
 
 
 def setmqtt():
@@ -394,7 +401,7 @@ if __name__ == '__main__':
     while True:  
 
         #print (get_earthquake())
-        print (read_Main_PowerMeter(5))
+        get_ModbusRtu_data()
         #print (get_water())
         time.sleep(10)
         '''
