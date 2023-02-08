@@ -67,7 +67,7 @@ def read_Main_PowerMeter(ID):
         
         return (MainPW_meter)
     except:
-        print("error_ModbusRTU")
+        print("error_ModbusRTU_PowerMaeter")
         ModbusRTU_Connect()
 
 
@@ -124,7 +124,7 @@ def get_temphumi():
     
         return evm_temp,evm_humi
     except:
-        print("error_ModbusRTU")
+        print("error_ModbusRTU_temphumi")
         ModbusRTU_Connect()
 
 def get_earthquake():
@@ -136,7 +136,7 @@ def get_earthquake():
     
         return earth_level,earth_value
     except:
-        print("error_ModbusRTU")
+        print("error_ModbusRTU_earthquake")
         ModbusRTU_Connect()
 
 def get_water():
@@ -154,7 +154,7 @@ def get_water():
         #return water_data
         return water_level,water_value
     except:
-        print("error_ModbusRTU")
+        print("error_ModbusRTU_water")
         ModbusRTU_Connect()
 
 def IPC_Func():
