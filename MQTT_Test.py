@@ -387,7 +387,7 @@ if __name__ == '__main__':
 
     while True:  
 
-        print (get_FirePeople())
+        print (get_temphumi())
         time.sleep(10)
         '''
         schedule.run_pending()  
