@@ -357,8 +357,8 @@ def jobforalarm():
         Powerdata = read_Main_PowerMeter(5)
         check_power(Powerdata[0],100,Powerdata)
 
-        water_level = get_water()
-        check_water(water_level)
+        #water_level = get_water()
+        #check_water(water_level)
 
         #earth_level = get_earthquake()
         #check_earthquake(earth_level[1])
