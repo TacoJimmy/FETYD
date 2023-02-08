@@ -389,8 +389,8 @@ if __name__ == '__main__':
 
     while True:  
 
-        #print (get_earthquake())
-        print (get_water())
+        print (get_earthquake())
+        #print (get_water())
         time.sleep(10)
         '''
         schedule.run_pending()  
