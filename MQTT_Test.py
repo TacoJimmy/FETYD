@@ -210,16 +210,19 @@ def earthquake(earthquake_level):
 def earthquake_alarm():
     payload_earthquakealarm = {"earthquake_alarm":1}
     print (json.dumps(payload_earthquakealarm))
+    print("earthquake_alarm")
     client.publish("yuanta/earthquake_error", json.dumps(payload_earthquakealarm))
     
 def Temperature_alarm(temp):
     payload_temperaturealarm = {"Temperature":0}
     print (json.dumps(payload_temperaturealarm))
+    print("Temperature_alarm")
     client.publish("yuanta/th_error", json.dumps(payload_temperaturealarm))
 
 def Power_alarm(voltage_status):
     payload_voltagealarm = {"voltage_error_r":0}
     print (json.dumps(payload_voltagealarm))
+    print("Power_alarm")
     client.publish("yuanta/electricity_error", json.dumps(payload_voltagealarm))
 
 def Humidity_alarm(humi):
@@ -230,22 +233,20 @@ def Humidity_alarm(humi):
 def fire_alarm():
     payload_firealarm = {"FireNode_error_01":0}
     print (json.dumps(payload_firealarm))
+    print("fire_alarm")
     client.publish("yuanta/fire_error", json.dumps(payload_firealarm))
     
 
 def water_alarm():
     payload_wateralarm = {"WaterNode_error_01":0}
     print (json.dumps(payload_wateralarm))
+    print("water alarm")
     client.publish("yuanta/water_error", json.dumps(payload_wateralarm))
-
-def elec_alarm():
-    payload_elecalarm = {"voltage_error_r":0}
-    print (json.dumps(payload_elecalarm))
-    client.publish("yuanta/electricity_error", json.dumps(payload_elecalarm))
 
 def peopledetec_alarm():
     peopledetec_alarm = {"PeopleDetec_alarm":0}
     print (json.dumps(peopledetec_alarm))
+    print ("peopledetec_alarm")
     client.publish("yuanta/peopledetec_error", json.dumps(peopledetec_alarm))
 
 def check_fire(fire_status):
@@ -294,6 +295,7 @@ def check_water(water_level):
         if glo_water_flag == 0 :
             water_alarm()
             Water_Func(water_level)
+            
             glo_water_flag = 1
     if water_level != 0:
         glo_water_flag = 0
