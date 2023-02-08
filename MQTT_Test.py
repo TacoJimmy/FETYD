@@ -387,11 +387,12 @@ if __name__ == '__main__':
 
     while True:  
 
-
-        
+        get_FirePeople()
+        time.sleep(10)
+        '''
         schedule.run_pending()  
         time.sleep(1) 
-        
+        '''
 '''
 
 if __name__ == '__main__':
