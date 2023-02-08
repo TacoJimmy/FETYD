@@ -375,8 +375,11 @@ if __name__ == '__main__':
 
     while True:  
 
-        schedule.run_pending()  
-        time.sleep(1) 
+
+        Powerdata = read_Main_PowerMeter(5)
+        print (Powerdata)
+        #schedule.run_pending()  
+        #time.sleep(1) 
         
 '''
 
