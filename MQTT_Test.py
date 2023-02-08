@@ -29,31 +29,39 @@ master.set_verbose(True)
 
 ser = serial.Serial(port='/dev/ttyS4', baudrate = 9600, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, bytesize=serial.EIGHTBITS, timeout=1)
 
+def modbus_tcp():
+    global master
+    master = modbus_rtu.RtuMaster(serial.Serial(port='/dev/ttyS1', baudrate=9600, bytesize=8, parity='N', stopbits=1, xonxoff=0))
+    master.set_timeout(5.0)
+    master.set_verbose(True)
 
 def read_Main_PowerMeter(ID):
-    MainPW_meter = [0,0,0,0,0,0,0,0,0]
-    pw_va = master.execute(5, cst.READ_HOLDING_REGISTERS, 311, 2)
-    pw_cur = master.execute(5, cst.READ_HOLDING_REGISTERS, 321, 2)
-    pw_power = master.execute(5, cst.READ_HOLDING_REGISTERS, 337, 2)
-    pw_pf = master.execute(5, cst.READ_HOLDING_REGISTERS, 358, 1)
-    pw_consum = master.execute(5, cst.READ_HOLDING_REGISTERS, 385, 2)
-    pw_DM = master.execute(5, cst.READ_HOLDING_REGISTERS, 362, 2)
+    try:
+        MainPW_meter = [0,0,0,0,0,0,0,0,0]
+        pw_va = master.execute(5, cst.READ_HOLDING_REGISTERS, 311, 2)
+        pw_cur = master.execute(5, cst.READ_HOLDING_REGISTERS, 321, 2)
+        pw_power = master.execute(5, cst.READ_HOLDING_REGISTERS, 337, 2)
+        pw_pf = master.execute(5, cst.READ_HOLDING_REGISTERS, 358, 1)
+        pw_consum = master.execute(5, cst.READ_HOLDING_REGISTERS, 385, 2)
+        pw_DM = master.execute(5, cst.READ_HOLDING_REGISTERS, 362, 2)
         
-    MainPW_meter[0] = round(pw_va[1] * 0.1,1)
-    MainPW_meter[1] = round(pw_cur[1] * 0.001,1)
-    MainPW_meter[2] = 0
-    MainPW_meter[3] = 0
-    MainPW_meter[4] = round((pw_power[0]*65535 + pw_power[1]) ,1)
-    MainPW_meter[5] = round(pw_pf[0]*0.1,1)
-    #MainPW_meter[5] = ReadFloat((pw_consum[0],pw_consum[1]))
-    MainPW_meter[6] = round((pw_consum[0]* 65536 + pw_consum[1] )*0.1,1)
-    #MainPW_meter[6] = round(pw_consum[0],1)
-    MainPW_meter[7] = 1
-    MainPW_meter[8] = round(((pw_DM[0] * 65536 + pw_DM[1])),1)
-    master.close()
-    #time.sleep(0.5)
-    return (MainPW_meter)
-
+        MainPW_meter[0] = round(pw_va[1] * 0.1,1)
+        MainPW_meter[1] = round(pw_cur[1] * 0.001,1)
+        MainPW_meter[2] = 0
+        MainPW_meter[3] = 0
+        MainPW_meter[4] = round((pw_power[0]*65535 + pw_power[1]) ,1)
+        MainPW_meter[5] = round(pw_pf[0]*0.1,1)
+        #MainPW_meter[5] = ReadFloat((pw_consum[0],pw_consum[1]))
+        MainPW_meter[6] = round((pw_consum[0]* 65536 + pw_consum[1] )*0.1,1)
+        #MainPW_meter[6] = round(pw_consum[0],1)
+        MainPW_meter[7] = 1
+        MainPW_meter[8] = round(((pw_DM[0] * 65536 + pw_DM[1])),1)
+        master.close()
+        #time.sleep(0.5)
+        return (MainPW_meter)
+    except:
+        modbus_tcp()
+        print("error_connectting")
 
 
 
