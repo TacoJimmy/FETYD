@@ -121,22 +121,21 @@ def get_FirePeople():
     try:
         ser = serial.Serial(port='/dev/ttyS4', baudrate = 9600, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, bytesize=serial.EIGHTBITS, timeout=1)
         ser.write(b'$016\r\n') # send command for gate Di data
-        output = ser.read(9) # Read 9 bytes from serial buffer 
-        print(int(str(output[2:3])))
-        '''
+        output = str(ser.read(9)) # Read 9 bytes from serial buffer 
         FirePeople_status = int(output[4])
-        if FirePeople_status == 2 or FirePeople_status == 3:
+
+        if FirePeople_status & 2 == 2:
             Fire_status = 1
         else:
             Fire_status = 0
         
-        if FirePeople_status == 1 or FirePeople_status == 3:
+        if FirePeople_status & 1 == 1:
             People_status = 1
         else:
             People_status = 0
     
         return Fire_status,People_status
-        '''
+        
     except:
         print("error_ModbusASCII")
         ser.close
