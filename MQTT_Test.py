@@ -119,27 +119,23 @@ def setmqtt():
 
 def get_FirePeople():
     try:
+        Fire_status = 0
+        People_status = 0
         ser = serial.Serial(port='/dev/ttyS4', baudrate = 9600, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, bytesize=serial.EIGHTBITS, timeout=1)
         ser.write(b'$016\r\n') # send command for gate Di data
         output = str(ser.read(9)) # Read 9 bytes from serial buffer 
         FirePeople_status = int(output[4])
 
-        if FirePeople_status & 2 == 2:
+        if FirePeople_status & 2 == 2: #check Fire
             Fire_status = 1
-        else:
-            Fire_status = 0
-        
-        if FirePeople_status & 1 == 1:
+        if FirePeople_status & 1 == 1: #check people detect
             People_status = 1
-        else:
-            People_status = 0
-    
+        
         return Fire_status,People_status
         
     except:
         print("error_ModbusASCII")
         ser.close
-        pass
 
 def IPC_Func():
     payload_ipc = {"Bank_Name":"南京分公司",
