@@ -121,15 +121,15 @@ def get_temphumi():
     return evm_temp,evm_humi
 
 def get_earthquake():
-    try:
+    #try:
         earth = master.execute(1, cst.READ_HOLDING_REGISTERS, 286, 2) 
         time.sleep(1)
         earth_level = round(earth[0])
         earth_value = round(earth[1])
     
         return earth_level,earth_value
-    except:
-        pass
+    #except:
+        #pass
 
 def get_water():
     earth = master.execute(20, cst.READ_HOLDING_REGISTERS, 282, 2) 
