@@ -123,6 +123,7 @@ def get_FirePeople():
         ser.write(b'$016\r\n') # send command for gate Di data
         output = int(ser.read(9)) # Read 9 bytes from serial buffer 
         print(output)
+        '''
         FirePeople_status = int(output[4])
         if FirePeople_status == 2 or FirePeople_status == 3:
             Fire_status = 1
@@ -135,6 +136,7 @@ def get_FirePeople():
             People_status = 0
     
         return Fire_status,People_status
+        '''
     except:
         print("error_ModbusASCII")
         ser.close
