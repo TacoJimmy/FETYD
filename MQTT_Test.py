@@ -387,7 +387,7 @@ if __name__ == '__main__':
 
     while True:  
 
-        print (get_temphumi())
+        print (get_earthquake())
         time.sleep(10)
         '''
         schedule.run_pending()  
