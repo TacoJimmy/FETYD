@@ -44,15 +44,8 @@ def ModbusASCII_Connect():
         pass
 
 
-def get_ModbusRtu_data():
-    try:
-        print (read_Main_PowerMeter(5))
-    except:
-        print("error_ModbusRTU")
-        ModbusRTU_Connect()
-
 def read_Main_PowerMeter(ID):
-    #try:
+    try:
         MainPW_meter = [0,0,0,0,0,0,0,0,0]
         pw_va = master.execute(ID, cst.READ_HOLDING_REGISTERS, 311, 2)
         pw_cur = master.execute(ID, cst.READ_HOLDING_REGISTERS, 321, 2)
@@ -73,8 +66,9 @@ def read_Main_PowerMeter(ID):
         master.close()
         
         return (MainPW_meter)
-    #except:
-        
+    except:
+        print("error_ModbusRTU")
+        ModbusRTU_Connect()
 
 
 def setmqtt():
@@ -130,29 +124,34 @@ def get_temphumi():
     return evm_temp,evm_humi
 
 def get_earthquake():
-    #try:
+    try:
         earth = master.execute(1, cst.READ_HOLDING_REGISTERS, 286, 2) 
         time.sleep(1)
         earth_level = round(earth[0])
         earth_value = round(earth[1])
     
         return earth_level,earth_value
-    #except:
-        #pass
+    except:
+        print("error_ModbusRTU")
+        ModbusRTU_Connect()
 
 def get_water():
-    earth = master.execute(20, cst.READ_HOLDING_REGISTERS, 282, 2) 
-    time.sleep(0.5)
-    water_level = round(earth[0])
-    water_value = round(earth[1])
+    try:
+        earth = master.execute(20, cst.READ_HOLDING_REGISTERS, 282, 2) 
+        time.sleep(0.5)
+        water_level = round(earth[0])
+        water_value = round(earth[1])
 
-    if water_level >= 300 :
-        water_data = 0
-    else:
-        water_data = 1
+        if water_level >= 300 :
+            water_data = 0
+        else:
+            water_data = 1
     
-    #return water_data
-    return water_level,water_value
+        #return water_data
+        return water_level,water_value
+    except:
+        print("error_ModbusRTU")
+        ModbusRTU_Connect()
 
 def IPC_Func():
     payload_ipc = {"Bank_Name":"南京分公司",
@@ -400,10 +399,10 @@ if __name__ == '__main__':
 
     while True:  
 
-        #print (get_earthquake())
-        get_ModbusRtu_data()
-        #print (get_water())
-        time.sleep(10)
+        print (get_earthquake())
+        print (read_Main_PowerMeter(5))
+        print (get_water())
+        time.sleep(5)
         '''
         schedule.run_pending()  
         time.sleep(1) 
