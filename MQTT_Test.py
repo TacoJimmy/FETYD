@@ -365,7 +365,7 @@ def jobforalarm():
     except:
         print ("somethingerror_alarm")
 
-schedule.every(1).minutes.do(jobforpublish)  
+schedule.every(10).seconds.do(jobforpublish)  
 schedule.every(1).seconds.do(jobforalarm)  
 
 
