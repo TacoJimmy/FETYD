@@ -116,12 +116,16 @@ def get_ADAM():
     return output
 
 def get_temphumi():
-    temp = master.execute(10, cst.READ_HOLDING_REGISTERS, 3, 2) 
-    time.sleep(0.5)
-    evm_temp = round(temp[0]*0.01,1)
-    evm_humi = round(temp[1]*0.01,1)
+    try:
+        temp = master.execute(10, cst.READ_HOLDING_REGISTERS, 3, 2) 
+        time.sleep(0.5)
+        evm_temp = round(temp[0]*0.01,1)
+        evm_humi = round(temp[1]*0.01,1)
     
-    return evm_temp,evm_humi
+        return evm_temp,evm_humi
+    except:
+        print("error_ModbusRTU")
+        ModbusRTU_Connect()
 
 def get_earthquake():
     try:
@@ -402,7 +406,8 @@ if __name__ == '__main__':
         print (get_earthquake())
         print (read_Main_PowerMeter(5))
         print (get_water())
-        time.sleep(5)
+        print (get_temphumi())
+        time.sleep(1)
         '''
         schedule.run_pending()  
         time.sleep(1) 
