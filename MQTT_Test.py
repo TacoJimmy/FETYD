@@ -208,7 +208,7 @@ def earthquake(earthquake_level):
     client.publish("yuanta/earthquake", json.dumps(payload_earthquake))
     
 def earthquake_alarm():
-    payload_earthquakealarm = {"earthquake_alarm":1}
+    payload_earthquakealarm = {"earthquake_alarm":0}
     print (json.dumps(payload_earthquakealarm))
     print("earthquake_alarm")
     client.publish("yuanta/earthquake_error", json.dumps(payload_earthquakealarm))
