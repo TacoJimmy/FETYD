@@ -303,7 +303,7 @@ def check_water(water_level):
 
 def check_earthquake(earth_level):
     global glo_earth_flag
-    if earth_level  >= 6:
+    if earth_level  >= 5:
         if glo_earth_flag == 0 :
             earthquake_alarm()
             earthquake(earth_level)
