@@ -202,8 +202,8 @@ def PowerManage(Powerdata):
     print (json.dumps(payload_power))
     client.publish("yuanta/electricity", json.dumps(payload_power))
     
-def earthquake(earthquake_level):
-    payload_earthquake = {"earthquake":earthquake_level,"sensor_alive":1}
+def earthquake(earthquake_level, earthquake_value):
+    payload_earthquake = {"earthquake":earthquake_level,"earthquake_value":earthquake_value,"sensor_alive":1}
     print (json.dumps(payload_earthquake))
     client.publish("yuanta/earthquake", json.dumps(payload_earthquake))
     
@@ -335,7 +335,7 @@ def jobforpublish():
         
         # get earth_level
         earth_level = get_earthquake()
-        earthquake(earth_level[1])
+        earthquake(earth_level[1],earth_level[0])
 
     except:
         print ("somethingerror_normal")
@@ -369,19 +369,14 @@ def jobforalarm():
     except:
         print ("somethingerror_alarm")
 
-'''
+
 schedule.every(30).seconds.do(jobforpublish)  
 schedule.every(1).seconds.do(jobforalarm)  
-'''
+
 
 if __name__ == '__main__':  
     
-
-
-    '''
     MQTT_Connect()
-    '''
-
     
     while True:  
         
