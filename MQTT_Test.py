@@ -302,12 +302,12 @@ def check_water(water_level):
         glo_water_flag = 0
 
 
-def check_earthquake(earth_level):
+def check_earthquake(earth_level, earth_value):
     global glo_earth_flag
     if earth_level  >= 5:
         if glo_earth_flag == 0 :
             earthquake_alarm()
-            earthquake(earth_level)
+            earthquake(earth_level,earth_value)
             print ("earthquake")
             glo_earth_flag = 1
     if earth_level == 0:
@@ -366,7 +366,7 @@ def jobforalarm():
         
         # earthquake_status alarm
         earth_level = get_earthquake()
-        check_earthquake(earth_level[1])
+        check_earthquake(earth_level[1],earth_level[0])
 
     except:
         print ("somethingerror_alarm")
