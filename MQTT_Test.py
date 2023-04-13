@@ -82,6 +82,7 @@ def get_earthquake():
     except:
         print("error_ModbusRTU_earthquake")
         master.close
+        return (9,0)
         
 
 def get_water():
