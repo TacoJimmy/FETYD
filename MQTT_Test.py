@@ -378,10 +378,7 @@ schedule.every(1).seconds.do(jobforalarm)
 
 if __name__ == '__main__':  
     
-
-    '''
     MQTT_Connect()
-    '''
 
 
     while True:  
@@ -395,13 +392,13 @@ if __name__ == '__main__':
         time.sleep(2)
         '''
         
-        '''
+        
         schedule.run_pending()  
         time.sleep(1) 
-        '''
+        
 
-        earth_level = get_earthquake()
-        print (earth_level)
-        time.sleep(5)
+        #earth_level = get_earthquake()
+        #print (earth_level)
+        #time.sleep(5)
     
     
