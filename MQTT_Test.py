@@ -335,6 +335,7 @@ def jobforpublish():
         
         # get earth_level
         earth_level = get_earthquake()
+        time.sleep(0.5)
         earthquake(earth_level[1],earth_level[0])
 
     except:
