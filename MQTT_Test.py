@@ -80,8 +80,8 @@ def get_earthquake():
     
         return earth_level,earth_value
     except:
-        print("error_ModbusRTU_earthquake")
-        master.close
+        #print("error_ModbusRTU_earthquake")
+        #master.close
         return (9,0)
         
 
