@@ -369,21 +369,33 @@ def jobforalarm():
     except:
         print ("somethingerror_alarm")
 
+'''
 schedule.every(30).seconds.do(jobforpublish)  
 schedule.every(1).seconds.do(jobforalarm)  
-
+'''
 
 if __name__ == '__main__':  
-    MQTT_Connect()
+    
 
+
+    '''
+    MQTT_Connect()
+    '''
+
+    
     while True:  
-        '''
+        
         print (get_earthquake())
+        '''
         print (read_Main_PowerMeter(5))
         print (get_water())
         print (get_temphumi(10))
         print (get_FirePeople())
-        time.sleep(1)
+        time.sleep(2)
+        '''
         '''
         schedule.run_pending()  
         time.sleep(1) 
+        '''
+    
+    
