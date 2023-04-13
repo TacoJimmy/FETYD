@@ -336,7 +336,7 @@ def jobforpublish():
         
         # get earth_level
         earth_level = get_earthquake()
-        time.sleep(0.5)
+        time.sleep(1)
         earthquake(earth_level[1],earth_level[0])
 
     except:
@@ -378,8 +378,12 @@ schedule.every(1).seconds.do(jobforalarm)
 
 if __name__ == '__main__':  
     
+
+    '''
     MQTT_Connect()
-    
+    '''
+
+
     while True:  
         '''
         print (get_earthquake())
@@ -391,8 +395,13 @@ if __name__ == '__main__':
         time.sleep(2)
         '''
         
+        '''
         schedule.run_pending()  
         time.sleep(1) 
-        
+        '''
+
+        earth_level = get_earthquake()
+        print (earth_level)
+        time.sleep(5)
     
     
